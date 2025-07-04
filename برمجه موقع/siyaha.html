@@ -1,0 +1,2542 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>السياحة في الوطن العربي</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* CSS Reset */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary-color: #2c3e50; /* Dark Blue */
+            --secondary-color: #e74c3c; /* Red */
+            --accent-color: #f39c12; /* Orange */
+            --light-color: #ecf0f1; /* Light Gray */
+            --dark-color: #2c3e50; /* Same as primary */
+            --text-color: #333;
+            --white-color: #ffffff;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        /* Utility Classes */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--primary-color);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: var(--accent-color);
+            margin: 0.5rem auto;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.6rem 1.2rem;
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            border: none;
+        }
+
+        .btn:hover {
+            background-color: #c0392b; /* Darker red */
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1519046904884-53103b34b206?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: var(--white-color);
+            padding: 2rem 0;
+            text-align: center;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 1;
+            transition: opacity 0.5s ease-out; /* For hiding/showing */
+        }
+
+        .header-hidden {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: var(--primary-color);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--white-color);
+            text-decoration: none;
+        }
+
+        .logo span {
+            color: var(--accent-color);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+
+        .nav-links li {
+            margin-right: 1.5rem;
+        }
+
+        .nav-links a {
+            color: var(--white-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-links a:hover {
+            color: var(--accent-color);
+        }
+
+        .header-content {
+            margin-top: 4rem;
+        }
+
+        .header-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-content p {
+            font-size: 1.2rem;
+            max-width: 800px;
+            margin: 0 auto 2rem;
+        }
+
+        .search-bar {
+            display: flex;
+            justify-content: center;
+            margin: 2rem 0;
+        }
+
+        .search-bar input {
+            padding: 0.8rem 1rem;
+            width: 50%;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .search-bar button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--secondary-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .search-bar button:hover {
+            background-color: #c0392b;
+        }
+
+        /* Main Sections (for hiding/showing) */
+        main section:not(#destination-detail-view) {
+            opacity: 1;
+            transition: opacity 0.5s ease-out;
+        }
+
+        .main-sections-hidden {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            pointer-events: none; /* Disable interactions when hidden */
+        }
+
+        /* Destinations Section */
+        .destinations {
+            padding: 4rem 0;
+            background-color: var(--white-color);
+        }
+
+        .destinations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .destination-card {
+            background-color: var(--white-color);
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .destination-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .destination-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .destination-card:hover .destination-img img {
+            transform: scale(1.1);
+        }
+
+        .destination-info {
+            padding: 1.5rem;
+        }
+
+        .destination-info h3 {
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+        }
+
+        .destination-info p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .destination-info .rating {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        /* Destination Detail View - Initially Hidden */
+        .destination-detail-view {
+            background-color: #f5f5f5;
+            padding: 4rem 0;
+            min-height: 100vh;
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.8s ease-out; /* Smooth fade in */
+        }
+
+        .destination-detail-view.active {
+            display: block; /* Show when active */
+        }
+
+        .detail-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .detail-header h2 {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .detail-header p {
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        .detail-content {
+            background-color: var(--white-color);
+            padding: 2.5rem;
+            border-radius: 10px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+            text-align: right;
+        }
+
+        .detail-content h3 {
+            color: var(--primary-color);
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            position: relative;
+        }
+
+        .detail-content h3::after {
+            content: '';
+            display: block;
+            width: 60px;
+            height: 3px;
+            background-color: var(--accent-color);
+            margin-top: 0.5rem;
+        }
+
+        .detail-content p {
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            color: #444;
+        }
+
+        .detail-content ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-content ul li {
+            margin-bottom: 0.8rem;
+            font-size: 1.05rem;
+            color: #555;
+        }
+        .detail-content ul li i {
+            margin-left: 0.5rem; /* Space after icon for RTL */
+            color: var(--accent-color);
+        }
+
+        /* Large Images in Details */
+        .detail-images-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-images-gallery img {
+            width: 100%;
+            height: 250px; /* Larger fixed height */
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .detail-images-gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        .back-to-main-btn {
+            display: block;
+            margin: 3rem auto 0;
+            width: fit-content;
+            padding: 0.8rem 2rem;
+            font-size: 1.1rem;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+            text-align: center;
+        }
+        .back-to-main-btn:hover {
+            background-color: #1a242f; /* Darker primary */
+        }
+
+        /* Categories Section - New Styles for Hover Info */
+        .categories {
+            padding: 4rem 0;
+            background-color: var(--light-color);
+        }
+
+        .categories-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .category-card {
+            background-color: var(--white-color);
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative; /* Needed for positioning the overlay */
+            overflow: hidden; /* Hide overflow from overlay */
+            cursor: default; /* Change cursor to default */
+            display: flex; /* Flexbox for internal alignment */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 180px; /* Ensure a consistent height */
+        }
+
+        .category-card:hover {
+            transform: translateY(-5px) scale(1.02); /* Slight scale for more noticeable hover */
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15); /* Stronger shadow */
+        }
+
+        /* Hide default text and icon on hover */
+        .category-card .category-default-content {
+            transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .category-card:hover .category-default-content {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        .category-default-content i {
+            font-size: 2.5rem;
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .category-default-content h3 {
+            color: var(--primary-color);
+        }
+
+        .category-info-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(44, 62, 80, 0.95); /* Darker overlay */
+            color: var(--white-color);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem;
+            text-align: center;
+            opacity: 0; /* Hidden by default */
+            transform: translateY(100%); /* Start from bottom */
+            transition: opacity 0.5s ease-out, transform 0.5s ease-out; /* Smooth transition */
+            box-sizing: border-box; /* Include padding in width/height */
+        }
+
+        .category-card:hover .category-info-overlay {
+            opacity: 1; /* Show on hover */
+            transform: translateY(0); /* Slide up */
+        }
+
+        .category-info-overlay h4 {
+            margin-bottom: 0.5rem;
+            color: var(--accent-color); /* Highlight heading */
+        }
+
+        .category-info-overlay p {
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            color: #eee;
+        }
+
+        .category-info-overlay ul {
+            list-style: none;
+            padding: 0;
+            text-align: right; /* RTL alignment */
+            margin-top: 0.5rem;
+        }
+
+        .category-info-overlay ul li {
+            font-size: 0.85rem;
+            margin-bottom: 0.5rem;
+            display: flex; /* Align icon and text */
+            align-items: center;
+            justify-content: flex-end; /* Align to right for RTL */
+            gap: 0.5rem;
+        }
+
+        .category-info-overlay ul li i {
+            color: var(--accent-color); /* Icon color */
+        }
+
+
+        /* Testimonials Section */
+        .testimonials {
+            padding: 4rem 0;
+            background-color: var(--white-color);
+        }
+
+        .testimonials-slider {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .testimonial {
+            background-color: var(--light-color);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+            animation: fadeIn 0.7s ease-out; /* Fade in effect for testimonials */
+        }
+
+        .testimonial.active {
+            display: block;
+        }
+
+        .testimonial img {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--accent-color);
+        }
+
+        .testimonial p {
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial .name {
+            font-weight: bold;
+            color: var(--primary-color);
+        }
+
+        .slider-controls {
+            display: flex;
+            justify-content: center;
+            margin-top: 1.5rem;
+        }
+
+        .slider-controls button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            cursor: pointer;
+            margin: 0 1rem;
+            transition: color 0.3s;
+        }
+        .slider-controls button:hover {
+            color: var(--accent-color);
+        }
+
+
+        /* Newsletter Section */
+        .newsletter {
+            padding: 4rem 0;
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            text-align: center;
+        }
+
+        .newsletter h2 {
+            margin-bottom: 1rem;
+        }
+
+        .newsletter p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .newsletter-form {
+            display: flex;
+            justify-content: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            padding: 0.8rem 1rem;
+            width: 70%;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            font-size: 1rem;
+        }
+
+        .newsletter-form button {
+            padding: 0.8rem 1.5rem;
+            background-color: var(--accent-color);
+            color: var(--white-color);
+            border: none;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #e67e22;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark-color);
+            color: var(--white-color);
+            padding: 3rem 0 1rem;
+            opacity: 1;
+            transition: opacity 0.5s ease-out; /* For hiding/showing */
+        }
+        .footer-hidden {
+            opacity: 0;
+            height: 0;
+            overflow: hidden;
+            pointer-events: none; /* Disable interactions when hidden */
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 1.5rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 2px;
+            background-color: var(--accent-color);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: var(--accent-color);
+        }
+
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: var(--white-color);
+            transition: background-color 0.3s;
+        }
+
+        .social-links a:hover {
+            background-color: var(--accent-color);
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .header-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .search-bar {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .search-bar input {
+                width: 80%;
+                margin-bottom: 0.5rem;
+                border-radius: 5px;
+            }
+
+            .search-bar button {
+                width: 80%;
+                border-radius: 5px;
+            }
+
+            .newsletter-form {
+                flex-direction: column;
+            }
+
+            .newsletter-form input {
+                width: 100%;
+                margin-bottom: 0.5rem;
+                border-radius: 5px;
+            }
+
+            .newsletter-form button {
+                width: 100%;
+                border-radius: 5px;
+            }
+
+            .detail-images-gallery {
+                grid-template-columns: 1fr; /* Stack images on small screens */
+            }
+
+            .detail-header h2 {
+                font-size: 2.2rem;
+            }
+            .detail-header p {
+                font-size: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 1s ease-out forwards;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <a href="#" class="logo">سياحة<span> العرب</span></a>
+        <ul class="nav-links">
+            <li><a href="#" class="nav-link-home">الرئيسية</a></li>
+            <li><a href="#destinations" class="nav-link-main">الوجهات</a></li>
+            <li><a href="#categories" class="nav-link-main">الفئات</a></li>
+            <li><a href="#testimonials" class="nav-link-main">تقييمات</a></li>
+            <li><a href="#contact" class="nav-link-main">اتصل بنا</a></li>
+        </ul>
+    </nav>
+
+    <header id="main-header">
+        <div class="header-content fade-in">
+            <h1>اكتشف جمال الوطن العربي</h1>
+            <p>استكشف أفضل الوجهات السياحية في العالم العربي من الشواطئ الخلابة إلى الصحراء الساحرة والمدن التاريخية العريقة</p>
+            <div class="search-bar">
+                <input type="text" placeholder="ابحث عن وجهة أحلامك...">
+                <button type="submit"><i class="fas fa-search"></i> بحث</button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main-sections-wrapper">
+        <section id="destinations" class="destinations">
+            <div class="container">
+                <h2 class="section-title">أشهر الوجهات السياحية</h2>
+                <div class="destinations-grid">
+                    <!-- دبي -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="دبي.jpg" alt="دبي">
+                        </div>
+                        <div class="destination-info">
+                            <h3>دبي، الإمارات</h3>
+                            <p>مدينة المستقبل مع ناطحات السحاب المذهلة وأكبر مركز تسوق في العالم.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>4.5 (1200 تقييم)</span>
+                            </div>
+                            <a href="#dubai-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- مراكش -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="المغرب.jpeg" alt="مراكش">
+                        </div>
+                        <div class="destination-info">
+                            <h3>مراكش، المغرب</h3>
+                            <p>مدينة الحمراء الساحرة بأسواقها التقليدية وقصورها العتيقة.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>4.0 (980 تقييم)</span>
+                            </div>
+                            <a href="#marrakech-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- البتراء -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="الاردن4.jpg" alt="البتراء">
+                        </div>
+                        <div class="destination-info">
+                            <h3>البتراء، الأردن</h3>
+                            <p>إحدى عجائب الدنيا السبع الجديدة، مدينة وردية منحوتة في الصخر.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span>5.0 (1500 تقييم)</span>
+                            </div>
+                            <a href="#petra-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- القاهرة -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="مصر1.jpg" alt="القاهرة">
+                        </div>
+                        <div class="destination-info">
+                            <h3>القاهرة، مصر</h3>
+                            <p>عاصمة التاريخ والحضارة، موطن الأهرامات الشاهقة والمتاحف الأثرية.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>4.7 (2100 تقييم)</span>
+                            </div>
+                            <a href="#cairo-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- الرياض -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="سعودية.jpg" alt="الرياض">
+                        </div>
+                        <div class="destination-info">
+                            <h3>الرياض، السعودية</h3>
+                            <p>قلب المملكة النابض، يجمع بين التراث العريق والحداثة المتطورة.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>4.2 (750 تقييم)</span>
+                            </div>
+                            <a href="#riyadh-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- بيروت -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="لبنن3.jpg" alt="بيروت">
+                        </div>
+                        <div class="destination-info">
+                            <h3>بيروت، لبنان</h3>
+                            <p>لؤلؤة الشرق الأوسط، مدينة نابضة بالحياة ذات تاريخ غني وثقافة فنية.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                                <span>3.9 (600 تقييم)</span>
+                            </div>
+                            <a href="#beirut-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- الدوحة -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="قطر.jpg" alt="الدوحة">
+                        </div>
+                        <div class="destination-info">
+                            <h3>الدوحة، قطر</h3>
+                            <p>مدينة عصرية تجمع بين الأصالة والمعاصرة، ومراكز تسوق فاخرة ومتاحف عالمية.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>4.6 (900 تقييم)</span>
+                            </div>
+                            <a href="#doha-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- تونس -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="تونس4.jpg" alt="تونس">
+                        </div>
+                        <div class="destination-info">
+                            <h3>تونس، تونس</h3>
+                            <p>مدينة التاريخ والجمال، تتميز بمدينتها العتيقة وشواطئها الساحرة.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                                <span>3.8 (550 تقييم)</span>
+                            </div>
+                            <a href="#tunis-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- بغداد -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="العراق.jpg" alt="بغداد">
+                        </div>
+                        <div class="destination-info">
+                            <h3>بغداد، العراق</h3>
+                            <p>عاصمة الخلافة العباسية، مدينة الألف ليلة وليلة بتاريخها الغني ونهر دجلة.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                                <span>3.5 (300 تقييم)</span>
+                            </div>
+                            <a href="#baghdad-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- دمشق -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="سوريا4.jpg" alt="دمشق">
+                        </div>
+                        <div class="destination-info">
+                            <h3>دمشق، سوريا</h3>
+                            <p>أقدم عاصمة مأهولة في التاريخ، مدينة الياسمين بسوقها الحميدية ومواقعها العريقة.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <i class="far fa-star"></i>
+                                <span>3.7 (400 تقييم)</span>
+                            </div>
+                            <a href="#damascus-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- مسقط -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="عمان4.jpg" alt="مسقط">
+                        </div>
+                        <div class="destination-info">
+                            <h3>مسقط، عمان</h3>
+                            <p>عاصمة الجمال العماني، تجمع بين الجبال الوعرة والشواطئ الهادئة والأسواق التقليدية.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span>4.3 (650 تقييم)</span>
+                            </div>
+                            <a href="#muscat-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- الجزائر -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img">
+                            <img src="جزائرج.jpg" alt="الجزائر">
+                        </div>
+                        <div class="destination-info">
+                            <h3>الجزائر، الجزائر</h3>
+                            <p>مدينة الجزائر البيضاء، تطل على البحر الأبيض المتوسط وتشتهر بقصباتها العتيقة.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <i class="far fa-star"></i>
+                                <span>3.2 (280 تقييم)</span>
+                            </div>
+                            <a href="#algiers-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+
+                    <!-- الكويت -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="الكويت.jpg" alt="الكويت"></div>
+                        <div class="destination-info">
+                            <h3>الكويت، الكويت</h3>
+                            <p>مركز حضاري واقتصادي مزدهر، يجمع بين الحداثة والتراث الخليجي الأصيل.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><span>4.0 (500 تقييم)</span></div>
+                            <a href="#kuwait-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- المنامة -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="البحرين.jpg" alt="المنامة"></div>
+                        <div class="destination-info">
+                            <h3>المنامة، البحرين</h3>
+                            <p>لؤلؤة الخليج، مزيج من التاريخ الغني وناطحات السحاب الحديثة.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>3.5 (450 تقييم)</span></div>
+                            <a href="#manama-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- صنعاء -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="اليمن4.jpg" alt="صنعاء"></div>
+                        <div class="destination-info">
+                            <h3>صنعاء، اليمن</h3>
+                            <p>مدينة تاريخية فريدة، بمبانيها الطينية التقليدية المذهلة.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><span>4.1 (150 تقييم)</span></div>
+                            <a href="#sanaa-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- الخرطوم -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="سودان4.jpg" alt="الخرطوم"></div>
+                        <div class="destination-info">
+                            <h3>الخرطوم، السودان</h3>
+                            <p>مدينة تقع عند ملتقى النيل الأزرق والأبيض، بوابة أفريقيا.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>3.0 (100 تقييم)</span></div>
+                            <a href="#khartoum-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- طرابلس -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="ليبيا5.jpg" alt="طرابلس"></div>
+                        <div class="destination-info">
+                            <h3>طرابلس، ليبيا</h3>
+                            <p>مدينة عريقة على ساحل البحر المتوسط، بشوارعها القديمة ومعالمها التاريخية.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>2.9 (80 تقييم)</span></div>
+                            <a href="#tripoli-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- مقديشو -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="صومال.jpg" alt="مقديشو"></div>
+                        <div class="destination-info">
+                            <h3>مقديشو، الصومال</h3>
+                            <p>مدينة ساحلية ذات تاريخ طويل، وشواطئ جميلة على المحيط الهندي.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>2.5 (50 تقييم)</span></div>
+                            <a href="#mogadishu-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- نواكشوط -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="موريتانيا.webp" alt="نواكشوط"></div>
+                        <div class="destination-info">
+                            <h3>نواكشوط، موريتانيا</h3>
+                            <p>عاصمة موريتانيا، مدينة صحراوية ساحلية بتراث ثقافي فريد.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>2.7 (70 تقييم)</span></div>
+                            <a href="#nouakchott-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- جيبوتي -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="جيبوتي3.jpg" alt="جيبوتي"></div>
+                        <div class="destination-info">
+                            <h3>جيبوتي، جيبوتي</h3>
+                            <p>موقع استراتيجي على البحر الأحمر، معروف ببحيراته المالحة ومناظره الطبيعية.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>2.6 (40 تقييم)</span></div>
+                            <a href="#djibouti-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- جزر القمر -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="جزر القمر4.jpg" alt="جزر القمر"></div>
+                        <div class="destination-info">
+                            <h3>موروني، جزر القمر</h3>
+                            <p>جزر بركانية في المحيط الهندي، طبيعة بكر وشواطئ استوائية.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><i class="far fa-star"></i><i class="far fa-star"></i><span>3.3 (60 تقييم)</span></div>
+                            <a href="#comoros-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                    
+                    <!-- فلسطين -->
+                    <div class="destination-card fade-in">
+                        <div class="destination-img"><img src="فلسطين.jpg" alt="فلسطين"></div>
+                        <div class="destination-info">
+                            <h3>القدس، فلسطين</h3>
+                            <p>مدينة مقدسة بتاريخ غني يمتد لآلاف السنين، ومواقع دينية هامة.</p>
+                            <div class="rating"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i><span>4.8 (800 تقييم)</span></div>
+                            <a href="#palestine-details" class="btn">اكتشف المزيد</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="categories" class="categories">
+            <div class="container">
+                <h2 class="section-title">أنواع السياحة</h2>
+                <div class="categories-grid">
+                    <div class="category-card fade-in">
+                        <div class="category-default-content">
+                            <i class="fas fa-umbrella-beach"></i>
+                            <h3>سياحة الشواطئ</h3>
+                            <p>استمتع بأجمل الشواطئ العربية</p>
+                        </div>
+                        <div class="category-info-overlay">
+                            <h4>سياحة الشواطئ والاستجمام</h4>
+                            <p>استكشف الشواطئ الرملية الذهبية والمياه الفيروزية الصافية في دبي، شرم الشيخ، وزنجبار.</p>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> الغوص والسباحة</li>
+                                <li><i class="fas fa-check-circle"></i> المنتجعات الفاخرة</li>
+                                <li><i class="fas fa-check-circle"></i> الأنشطة المائية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="category-card fade-in">
+                        <div class="category-default-content">
+                            <i class="fas fa-mountain"></i>
+                            <h3>سياحة المغامرات</h3>
+                            <p>مغامرات لا تنسى في الطبيعة</p>
+                        </div>
+                        <div class="category-info-overlay">
+                            <h4>سياحة المغامرات المثيرة</h4>
+                            <p>تحدَّ نفسك في الصحاري الواسعة والتضاريس الوعرة، من رحلات السفاري إلى تسلق الجبال في الأردن والمغرب.</p>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> سفاري الصحراء</li>
+                                <li><i class="fas fa-check-circle"></i> تسلق الجبال</li>
+                                <li><i class="fas fa-check-circle"></i> التخييم</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="category-card fade-in">
+                        <div class="category-default-content">
+                            <i class="fas fa-landmark"></i>
+                            <h3>سياحة تاريخية</h3>
+                            <p>اكتشف الحضارات العريقة</p>
+                        </div>
+                        <div class="category-info-overlay">
+                            <h4>سياحة التاريخ والحضارة</h4>
+                            <p>انغمس في عبق التاريخ بزيارة المدن القديمة والمواقع الأثرية مثل البتراء والأهرامات في مصر.</p>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> زيارة المواقع الأثرية</li>
+                                <li><i class="fas fa-check-circle"></i> المتاحف</li>
+                                <li><i class="fas fa-check-circle"></i> المدن القديمة</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="category-card fade-in">
+                        <div class="category-default-content">
+                            <i class="fas fa-utensils"></i>
+                            <h3>سياحة غذائية</h3>
+                            <p>تذوق ألذ المأكولات العربية</p>
+                        </div>
+                        <div class="category-info-overlay">
+                            <h4>سياحة المأكولات والنكهات</h4>
+                            <p>استمتع بتجربة الطهي الفريدة وتذوق الأطباق التقليدية اللذيذة في كل بلد عربي، من المندي إلى الطاجين.</p>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> جولات طعام</li>
+                                <li><i class="fas fa-check-circle"></i> مطاعم تقليدية</li>
+                                <li><i class="fas fa-check-circle"></i> دروس طبخ</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="category-card fade-in">
+                        <div class="category-default-content">
+                            <i class="fas fa-mosque"></i>
+                            <h3>سياحة دينية</h3>
+                            <p>زيارة الأماكن المقدسة</p>
+                        </div>
+                        <div class="category-info-overlay">
+                            <h4>سياحة الأماكن المقدسة</h4>
+                            <p>قم بزيارة المواقع الدينية المهمة والمقدسة في مكة المكرمة، المدينة المنورة، القدس، وغيرها.</p>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> الحج والعمرة</li>
+                                <li><i class="fas fa-check-circle"></i> زيارة المساجد والكنائس التاريخية</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="category-card fade-in">
+                        <div class="category-default-content">
+                            <i class="fas fa-heartbeat"></i>
+                            <h3>سياحة علاجية</h3>
+                            <p>الاستجمام والعلاج بالمياه</p>
+                        </div>
+                        <div class="category-info-overlay">
+                            <h4>سياحة الصحة والعلاج</h4>
+                            <p>استفد من المياه المعدنية الطبيعية والمراكز الصحية المتخصصة في العديد من الدول العربية.</p>
+                            <ul>
+                                <li><i class="fas fa-check-circle"></i> الينابيع الساخنة</li>
+                                <li><i class="fas fa-check-circle"></i> مراكز الاستجمام</li>
+                                <li><i class="fas fa-check-circle"></i> الطب البديل</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="testimonials" class="testimonials">
+            <div class="container">
+                <h2 class="section-title">آراء الزوار</h2>
+                <div class="testimonials-slider">
+                    <div class="testimonial active">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="سارة محمد">
+                        <p>"لقد كانت تجربة رائعة في دبي، الموقع ساعدني في التخطيط لرحلتي بشكل ممتاز!"</p>
+                        <div class="name">سارة محمد</div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="أحمد خالد">
+                        <p>"زيارة البتراء كانت حلم حياتي، وشكرًا للموقع على المعلومات الدقيقة والتوصيات المفيدة."</p>
+                        <div class="name">أحمد خالد</div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star-half-alt"></i>
+                        </div>
+                    </div>
+
+                    <div class="testimonial">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="نورا عبدالله">
+                        <p>"مراكش مدينة ساحرة، ودليل السفر الذي قدمه الموقع كان مفيدًا جدًا في تجربتي."</p>
+                        <div class="name">نورا عبدالله</div>
+                        <div class="rating">
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="fas fa-star"></i>
+                            <i class="far fa-star"></i>
+                        </div>
+                    </div>
+
+                    <div class="slider-controls">
+                        <button id="prev-testimonial"><i class="fas fa-chevron-right"></i></button>
+                        <button id="next-testimonial"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="newsletter">
+            <div class="container">
+                <h2>اشترك في نشرتنا البريدية</h2>
+                <p>احصل على آخر العروض والتخفيضات وأفضل الوجهات السياحية مباشرة إلى بريدك الإلكتروني</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="أدخل بريدك الإلكتروني" required>
+                    <button type="submit">اشترك الآن</button>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- تفاصيل الوجهات السياحية -->
+    <!-- دبي -->
+    <section id="dubai-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>دبي، الإمارات</h2>
+                <p>مدينة المستقبل مع ناطحات السحاب المذهلة وأكبر مركز تسوق في العالم.</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن دبي:</h3>
+                <p>تعتبر دبي من أهم المدن السياحية في العالم، وتشتهر بتنوعها الثقافي ومناطق الجذب السياحي الفريدة.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="نافورة.jpg" alt="دبي">
+                    <img src="برج خليفه.jpg" alt="دبي">
+                    <img src="دبي مول.jpg" alt="دبي">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> برج خليفة: أطول مبنى في العالم يوفر إطلالات بانورامية.</li>
+                    <li><i class="fas fa-check-circle"></i> دبي مول: واحد من أكبر مراكز التسوق والترفيه في العالم.</li>
+                    <li><i class="fas fa-check-circle"></i> نافورة دبي: عرض مائي راقص مذهل.</li>
+                    <li><i class="fas fa-check-circle"></i> جميرا بيتش: شاطئ رملي جميل مع فنادق ومنتجعات فاخرة.</li>
+                    <li><i class="fas fa-check-circle"></i> رحلات السفاري الصحراوية: تجربة مغامرة في الكثبان الرملية.</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أكتوبر إلى أبريل حيث يكون الطقس معتدلاً وممتعاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المندي، الهريس، والمأكولات البحرية الطازجة في المطاعم الفاخرة.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $150-$300 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $30-$70 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $100-$250.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"مدينة مذهلة بكل ما تعنيه الكلمة، لا تتوقف عن إبهار الزوار." - فاطمة علي</p>
+                <p>"تجربة تسوق فريدة ومطاعم عالمية المستوى." - خالد السعدي</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- مراكش -->
+    <section id="marrakech-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>مراكش، المغرب</h2>
+                <p>مدينة الحمراء الساحرة بأسواقها التقليدية وقصورها العتيقة.</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن مراكش:</h3>
+                <p>مراكش مدينة حيوية ومليئة بالثقافة والتاريخ، تُعرف بأسواقها الصاخبة ورياضها الجميلة.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="صوره1 مغرب.jpg" alt="مراكش">
+                    <img src="2مغرب.jpg" alt="مراكش">
+                    <img src="3مغرب.jpg" alt="مراكش">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> ساحة جامع الفنا: قلب المدينة النابض بالحياة، مليء بالقصاصين، الموسيقيين، وبائعي الطعام.</li>
+                    <li><i class="fas fa-check-circle"></i> حدائق ماجوريل: حدائق جميلة وهادئة ذات ألوان زاهية ومتحف إيف سان لوران.</li>
+                    <li><i class="fas fa-check-circle"></i> قصر الباهية: قصر تاريخي يتميز بفن العمارة المغربي الأصيل.</li>
+                    <li><i class="fas fa-check-circle"></i> مدارس بن يوسف: مدرسة قديمة ذات تصميم معماري إسلامي مذهل.</li>
+                    <li><i class="fas fa-check-circle"></i> الأسواق التقليدية (السوق): استكشف الحرف اليدوية، التوابل، والمنتجات المحلية.</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من مارس إلى مايو ومن سبتمبر إلى نوفمبر لتجنب الحرارة الشديدة.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>لا تفوت تجربة الطاجين، الكسكس، والحريرة، مع شاي النعناع المغربي الأصيل.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في رياض متوسط: $80-$150 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم محلي: $10-$25 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة إرشادية: $40-$80.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"مدينة رائعة تثير الحواس، أسواقها تجربة لا مثيل لها." - يوسف الشمري</p>
+                <p>"الرياض الهادئة في المدينة القديمة توفر ملاذًا ساحرًا." - ليلى فؤاد</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- البتراء -->
+    <section id="petra-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>البتراء، الأردن</h2>
+                <p>إحدى عجائب الدنيا السبع الجديدة، مدينة وردية منحوتة في الصخر.</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن البتراء:</h3>
+                <p>البتراء هي مدينة أثرية وتاريخية تقع في الأردن، وتعتبر من أبرز المواقع التراثية العالمية.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="الاردن 1.jpg" alt="البتراء">
+                    <img src="الاردن2.jpg" alt="البتراء">
+                    <img src="الاردن3.jpg" alt="البتراء">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> الخزنة (السيق): الواجهة الأكثر شهرة في البتراء، منحوتة بدقة في الصخر.</li>
+                    <li><i class="fas fa-check-circle"></i> الدير: مبنى ضخم يقع في أعلى المدينة، يتطلب المشي لمسافة أطول.</li>
+                    <li><i class="fas fa-check-circle"></i> السيق: ممر ضيق يؤدي إلى الخزنة، يمتد بين جبال شاهقة.</li>
+                    <li><i class="fas fa-check-circle"></i> شارع الواجهات: يضم العديد من المقابر المنحوتة في الصخر.</li>
+                    <li><i class="fas fa-check-circle"></i> المسرح الروماني: مسرح قديم منحوت في الجبل.</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>فصلي الربيع (مارس-مايو) والخريف (سبتمبر-نوفمبر) لطقس معتدل.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المنسف، الزرب، والمقلوبة، وهي أطباق أردنية تقليدية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> رسوم دخول البتراء: 50 دينار أردني (حوالي $70) لليوم الواحد.</li>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط قريب: $60-$120 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم محلي: $15-$30 للشخص.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"تجربة لا تصدق، وكأنك تعود بالزمن إلى الوراء." - محمد الجيزاوي</p>
+                <p>"جمال البتراء يفوق الوصف، كل زاوية فيها قصة." - ريم القاسم</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- القاهرة -->
+    <section id="cairo-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>مصر</h2>
+                <p>أرض الفراعنة، حيث التاريخ العريق يلتقي بالطبيعة الساحرة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن مصر:</h3>
+                <p>مصر هي واحدة من أقدم الحضارات في العالم، تشتهر بآثارها الفرعونية وشواطئها الممتدة على البحر الأحمر والبحر المتوسط.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="شرم شيخ.jpg" alt="مصر">
+                    <img src="قلعه صلاح دين.jpg" alt="مصر">
+                    <img src="ابو لهول.jpg" alt="مصر">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في مصر</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>الأهرامات وأبو الهول:</strong> عجائب الدنيا السبع القديمة في الجيزة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شرم الشيخ:</strong> مدينة الغوص والاستجمام على البحر الأحمر</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الأقصر:</strong> أكبر متحف مفتوح في العالم بمعابدها الفرعونية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>أسوان:</strong> جوهرة النيل بمعابدها وجزيرة الفنتين</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الإسكندرية:</strong> عروس البحر المتوسط بمكتبتها الشهيرة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>واحة سيوة:</strong> جوهرة الصحراء الغربية</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أكتوبر إلى أبريل حيث يكون الطقس بارداً ومشمساً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>تذوق الكشري، الفول والطعمية، المحاشي، والملوخية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $50-$100 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم محلي: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة إلى الأهرامات: $20-$50.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"مدينة الألف مئذنة، كل زاوية فيها قصة تاريخية." - علي السيد</p>
+                <p>"زيارة الأهرامات كانت تجربة روحانية لا مثيل لها." - هبة رضوان</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- الرياض -->
+    <section id="riyadh-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>السعودية</h2>
+                <p>أرض الحرمين الشريفين، حيث الأصالة تلتقي بالحداثة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن السعودية:</h3>
+                <p>المملكة العربية السعودية هي أكبر دولة في الشرق الأوسط، وتتميز بتنوعها الجغرافي بين الصحاري والجبال والسواحل.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="سعوديه 1.jpg" alt="السعودية">
+                    <img src="سعوديه 2.jpg" alt="السعودية">
+                    <img src="سعوديه3.jpg" alt="السعودية">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في السعودية</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>مكة المكرمة:</strong> أقدس مدينة في الإسلام وموطن الكعبة المشرفة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>المدينة المنورة:</strong> مدينة النبي صلى الله عليه وسلم ومسجده الشريف</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الرياض:</strong> العاصمة النابضة بالحياة وبرج المملكة الشهير</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جدة:</strong> عروس البحر الأحمر وواجهتها البحرية المميزة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الطائف:</strong> مدينة الورود والطبيعة الخلابة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>العلا:</strong> متحف الآثار المفتوح ومدائن صالح</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى مارس حيث يكون الطقس بارداً ومناسباً للتجول.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الكبسة، المندي، المطازيز، والجريش، وهي أطباق سعودية أصيلة.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $100-$200 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $20-$50 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> دخول المتحف الوطني: $5-$10.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"مدينة توازن بين الحداثة والأصالة بشكل رائع." - سارة العتيبي</p>
+                <p>"تطور سريع ومستقبل واعد في السياحة." - فهد الموسى</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- بيروت، لبنان -->
+    <section id="beirut-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>لبنان</h2>
+                <p>لؤلؤة الشرق الأوسط، حيث الجبال تلتقي البحر والتاريخ يعانق الحداثة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن لبنان:</h3>
+                <p>لبنان دولة صغيرة بمساحتها لكنها غنية بتنوعها الثقافي والطبيعي، تشتهر بجبالها الخلابة وشواطئها الرائعة ومطبخها اللذيذ.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="لبنان4.jpg" alt="لبنان">
+                    <img src="لبنان2.jpg" alt="لبنان">
+                    <img src="لبنان1.jpg" alt="لبنان">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في لبنان</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>بيروت:</strong> العاصمة النابضة بالحياة بشارع الحمرا و"الروشة" الشهيرة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جبال لبنان:</strong> مثل فاريا للرياضات الشتوية وبقاع كفرا للطبيعة الخلابة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جبيل (بيبلوس):</strong> من أقدم المدن المأهولة في العالم</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بعلبك:</strong> آثار رومانية ضخمة مدرجة على لائحة اليونسكو</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>صور:</strong> مدينة فينيقية تاريخية على البحر</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>وادي قاديشا:</strong> الوادي المقدس ومواقع الرهبان المسيحية</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أبريل إلى يونيو ومن سبتمبر إلى نوفمبر لتجنب الحرارة الشديدة في الصيف والبرد في الشتاء.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>لا تفوت تجربة المزة اللبنانية، الكبة، التبولة، والمناقيش.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $80-$150 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $15-$40 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $50-$100.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد صغير بقلب كبير، يجمع كل مقومات الجمال." - نادين نجيم</p>
+                <p>"طعام لذيخ وشعب كريم وطبيعة خلابة." - خالد الصفدي</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- الدوحة، قطر -->
+    <section id="doha-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>قطر</h2>
+                <p>جوهرة الخليج حيث التراث الأصيل يلتقي بالتطور الحديث</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن قطر:</h3>
+                <p>قطر هي دولة عربية تقع في شرق شبه الجزيرة العربية، تشتهر بثرائها الثقافي وتطورها العمراني السريع.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="قطر1.jpg" alt="قطر">
+                    <img src="قطر2.jpg" alt="قطر">
+                    <img src="قطر3.jpg" alt="قطر">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في قطر</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>الدوحة:</strong> العاصمة الحديثة بمنطقة الكورنيش ومتاحفها العالمية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>سوق واقف:</strong> السوق التقليدي الذي يجمع بين الأصالة والحداثة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>خور العديد:</strong> منطقة الكثبان الرملية المطلة على البحر</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الزبارة:</strong> موقع تراث عالمي لليونسكو</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة النخيل:</strong> جزيرة اصطناعية فاخرة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>مدينة لوسيل:</strong> المدينة الذكية الجديدة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى مارس حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الثريد، الهريس، المكبوس، والمحمر.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $120-$250 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $25-$60 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $80-$150.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد يجمع بين الأصالة والرفاهية بانسجام رائع." - علياء الكواري</p>
+                <p>"تجربة تسوق فريدة ومرافق عالمية المستوى." - محمد المري</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- تونس -->
+    <section id="tunis-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>تونس</h2>
+                <p>بلد التنوع، حيث البحر والصحراء والتاريخ والثقافة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن تونس:</h3>
+                <p>تونس هي دولة تقع في شمال أفريقيا، تشتهر بشواطئها الجميلة ومدنها العتيقة ومواقعها الأثرية.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="تونس1.jpg" alt="تونس">
+                    <img src="تونس2.jpg" alt="تونس">
+                    <img src="تونس3.jpg" alt="تونس">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في تونس</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>تونس العاصمة:</strong> المدينة العتيقة والمتاحف</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>سوسة:</strong> المدينة الساحلية بقلعتها الشهيرة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الحمامات:</strong> المنتجع السياحي الشهير</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>قرطاج:</strong> الآثار الرومانية والتاريخ العريق</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جربة:</strong> جزيرة الأحلام بشواطئها الذهبية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>توزر:</strong> بوابة الصحراء التونسية</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أبريل إلى يونيو ومن سبتمبر إلى نوفمبر.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الكسكسي، البركوك، الطاجين التونسي، والبريك.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $50-$120 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $10-$25 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $40-$80.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بشعب طيب وطعام لذيذ." - سامي الدريدي</p>
+                <p>"شواطئ رائعة وتاريخ عريق." - منى الفالحي</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- بغداد، العراق -->
+    <section id="baghdad-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>العراق</h2>
+                <p>أرض الرافدين، مهد الحضارات وبلد التاريخ العريق</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن العراق:</h3>
+                <p>العراق هو بلد الحضارات القديمة مثل السومرية والبابلية والآشورية، ويتميز بثرائه التاريخي والثقافي.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="العراق4.jpg" alt="العراق">
+                    <img src="العراق2.jpg" alt="العراق">
+                    <img src="العراق1.jpg" alt="العراق">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في العراق</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>بغداد:</strong> العاصمة التاريخية بشارع الرشيد والمتحف العراقي</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بابل:</strong> آثار المدينة التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>النجف:</strong> المدينة المقدسة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>كربلاء:</strong> مدينة الزائرين</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>أربيل:</strong> عاصمة إقليم كردستان</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>البصرة:</strong> مدينة الشواطئ</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أكتوبر إلى أبريل حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المسكوف، القيمة، الدولمة، والكباب العراقي.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $40-$100 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $30-$60.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد عريق بتراث لا يقدر بثمن." - حسن الكاظمي</p>
+                <p>"شعب كريم وطعام لذيذ." - زهراء البغدادي</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- دمشق، سوريا -->
+    <section id="damascus-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>سوريا</h2>
+                <p>بلد الياسمين والتاريخ العريق</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن سوريا:</h3>
+                <p>سوريا هي واحدة من أقدم المناطق المأهولة في العالم، وتشتهر بمواقعها الأثرية وتاريخها الغني.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="سوريا1.jpg" alt="سوريا">
+                    <img src="سوريا2.jpg" alt="سوريا">
+                    <img src="سوريا3.jpg" alt="سوريا">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في سوريا</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>دمشق:</strong> أقدم عاصمة مأهولة في العالم</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>حلب:</strong> المدينة التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>تدمر:</strong> آثار المدينة التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>اللاذقية:</strong> المدينة الساحلية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بصرى:</strong> المسرح الروماني</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>وادي النضارة:</strong> منطقة الطبيعة الخلابة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من مارس إلى مايو ومن سبتمبر إلى نوفمبر.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الكبة، المحاشي، الفتة، والشاورما السورية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $30-$80 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $20-$50.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بتراث عريق." - علي السوري</p>
+                <p>"أجمل بلد في العالم." - لينا الشامي</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- مسقط، عمان -->
+    <section id="muscat-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>عمان</h2>
+                <p>بلد الجبال والشواطئ والتراث الأصيل</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن عمان:</h3>
+                <p>عمان هي دولة تقع في جنوب شرق شبه الجزيرة العربية، تشتهر بجبالها الشاهقة وشواطئها الخلابة.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="عمان1.jpg" alt="عمان">
+                    <img src="عمان2.jpg" alt="عمان">
+                    <img src="عمان3.jpg" alt="عمان">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في عمان</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>مسقط:</strong> العاصمة بقلعتي الجلالي والميراني</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>صلالة:</strong> مدينة الخضرة والضباب</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>نزوى:</strong> عاصمة عمان التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جبل شمس:</strong> أعلى قمة في عمان</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>وادي بني خالد:</strong> جوهرة الطبيعة العمانية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>رأس الجنز:</strong> محمية السلاحف</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أكتوبر إلى أبريل حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الشواء العماني، الهريس، المكبوس، واللقيمات.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $80-$180 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $15-$35 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $60-$120.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بشعب كريم." - خالد العماني</p>
+                <p>"طبيعة خلابة وتاريخ عريق." - آمنة البلوشية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- الجزائر -->
+    <section id="algiers-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>الجزائر</h2>
+                <p>بلد المليون شهيد والطبيعة الساحرة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن الجزائر:</h3>
+                <p>الجزائر هي أكبر دولة أفريقية من حيث المساحة، وتتميز بتنوعها الجغرافي بين الصحراء والجبال والساحل.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="جزائر1.jpg" alt="الجزائر">
+                    <img src="جزائر2.jpg" alt="الجزائر">
+                    <img src="جزائر3.jpg" alt="الجزائر">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في الجزائر</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>الجزائر العاصمة:</strong> المدينة البيضاء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>قسنطينة:</strong> مدينة الجسور المعلقة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>وهران:</strong> المدينة الساحلية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>تيمقاد:</strong> الآثار الرومانية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>غرداية:</strong> جوهرة الصحراء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جبال الأوراس:</strong> الطبيعة الخلابة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من سبتمبر إلى نوفمبر ومن مارس إلى مايو.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الكسكسي الجزائري، الشخشوخة، المردود، والطاجين.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $50-$120 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $10-$25 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $40-$80.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بتنوعه الطبيعي." - ياسمين الجزائرية</p>
+                <p>"شعب كريم وطعام لذيذ." - عبدالقادر التلمساني</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- الكويت -->
+    <section id="kuwait-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>الكويت</h2>
+                <p>بلد الخير والضيافة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن الكويت:</h3>
+                <p>الكويت هي دولة عربية تقع في شمال شرق شبه الجزيرة العربية، تشتهر بثرائها النفطي واقتصادها المزدهر.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="كويت1.jpg" alt="الكويت">
+                    <img src="كويت2.jpg" alt="الكويت">
+                    <img src="كويت3.jpg" alt="الكويت">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في الكويت</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>الكويت العاصمة:</strong> أبراج الكويت وحديقة الشعب</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>السالمية:</strong> منطقة التسوق</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة فيلكا:</strong> الجزيرة التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>المارينا مول:</strong> وجهة التسوق</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>المسجد الكبير:</strong> تحفة معمارية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>منتزه الشعب الترفيهي:</strong> متنزه العائلات</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى مارس حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المجبوس، الهريس، الجريش، واللقيمات.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $100-$250 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $20-$50 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $70-$150.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بمرافق متطورة." - نواف الكويتي</p>
+                <p>"تجربة تسوق رائعة." - دانة العبدالله</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- المنامة، البحرين -->
+    <section id="manama-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>البحرين</h2>
+                <p>لؤلؤة الخليج</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن البحرين:</h3>
+                <p>البحرين هي أرخبيل صغير في الخليج العربي، تشتهر بتاريخها العريق واقتصادها المتنوع.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="البحرين1.jpg" alt="البحرين">
+                    <img src="البحرين2.jpg" alt="البحرين">
+                    <img src="البحرين3.jpg" alt="البحرين">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في البحرين</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>المنامة:</strong> العاصمة وقلعة البحرين</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>المحرق:</strong> المدينة التراثية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شجرة الحياة:</strong> الشجرة المعمرة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>مدينة حمد:</strong> الحدائق والمتنزهات</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>سوق المنامة:</strong> السوق التقليدي</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة أمواج:</strong> المشروع السياحي</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى مارس حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المحمر، الثريد، الهريس، واللقيمات.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $90-$200 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $15-$40 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $60-$120.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد صغير بقلب كبير." - أحمد البحريني</p>
+                <p>"تجربة تسوق رائعة." - مريم الخليفة</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- صنعاء، اليمن -->
+    <section id="sanaa-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>اليمن</h2>
+                <p>بلاد السعيدة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن اليمن:</h3>
+                <p>اليمن هي دولة تقع في جنوب شبه الجزيرة العربية، تشتهر بتاريخها العريق وتراثها الثقافي الغني.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="اليمن1.jpg" alt="اليمن">
+                    <img src="اليمن2.jpg" alt="اليمن">
+                    <img src="اليمن3.jpg" alt="اليمن">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في اليمن</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>صنعاء:</strong> المدينة القديمة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>عدن:</strong> المدينة الساحلية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شبام:</strong> مانهاتن الصحراء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>زبيد:</strong> المدينة التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>سقطرى:</strong> الجزيرة الساحرة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>تعز:</strong> مدينة الثقافة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أكتوبر إلى أبريل حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المندي، السلتة، الشفوت، والبنت اليمنية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $30-$80 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $20-$50.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بتراث عريق." - عبدالله اليمني</p>
+                <p>"شعب كريم وطعام لذيذ." - فاطمة الصنعانية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- الخرطوم، السودان -->
+    <section id="khartoum-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>السودان</h2>
+                <p>بلد النيلين</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن السودان:</h3>
+                <p>السودان هي دولة كبيرة في شمال أفريقيا، تشتهر بنهر النيل ومواقعها الأثرية وتنوعها الثقافي.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="سودان3.jpg" alt="السودان">
+                    <img src="سودان2.jpg" alt="السودان">
+                    <img src="سودان1.jpg" alt="السودان">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في السودان</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>الخرطوم:</strong> ملتقى النيلين</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>مروي:</strong> الأهرامات النوبية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بورتسودان:</strong> المدينة الساحلية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>كسلا:</strong> جبال التاكا</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>دنقلا:</strong> الثقافة النوبية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جبل مرة:</strong> الطبيعة الخلابة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى فبراير حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الكسرة، الملاح، العصيدة، والفسيخ.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $40-$90 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $30-$70.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بتنوعه." - محمد السوداني</p>
+                <p>"شعب كريم وطبيعة خلابة." - آمنة الخرطومية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- طرابلس، ليبيا -->
+    <section id="tripoli-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>ليبيا</h2>
+                <p>بلد الصحراء الذهبية</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن ليبيا:</h3>
+                <p>ليبيا هي دولة كبيرة في شمال أفريقيا، تشتهر بصحرائها الشاسعة ومواقعها الأثرية الرومانية.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="ليبيا1.jpg" alt="ليبيا">
+                    <img src="ليبيا2.jpg" alt="ليبيا">
+                    <img src="ليبيا3.jpg" alt="ليبيا">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في ليبيا</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>طرابلس:</strong> العاصمة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بنغازي:</strong> المدينة الثانية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>صبراتة:</strong> الآثار الرومانية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>غدامس:</strong> جوهرة الصحراء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شحات:</strong> آثار قورينا</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>وادي الحياة:</strong> الواحات</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من أكتوبر إلى أبريل حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب البازين، الكسكسي الليبي، الشوربة، والمحشي.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $40-$100 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $30-$70.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بتراث عريق." - علي الليبي</p>
+                <p>"شعب كريم وطبيعة خلابة." - فاطمة طرابلسية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- مقديشو، الصومال -->
+    <section id="mogadishu-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>الصومال</h2>
+                <p>بلد القرن الأفريقي</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن الصومال:</h3>
+                <p>الصومال هي دولة تقع في القرن الأفريقي، تشتهر بشواطئها الطويلة وتاريخها البحري العريق.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="صومال3.jpg" alt="الصومال">
+                    <img src="صومال2.jpg" alt="الصومال">
+                    <img src="صومال1.jpg" alt="الصومال">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في الصومال</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>مقديشو:</strong> العاصمة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>هرجيسا:</strong> عاصمة أرض الصومال</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بربرة:</strong> المدينة الساحلية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>كيسمايو:</strong> المدينة الجنوبية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة سقطرى اليمنية:</strong> قريبة من السواحل الصومالية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شواطئ الصومال:</strong> الطويلة والجميلة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من ديسمبر إلى فبراير حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الأنجيرا، السور، الباجيلا، واللحوم المشوية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $30-$80 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $20-$50.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بشواطئ رائعة." - عبدي الصومالي</p>
+                <p>"شعب كريم وطعام لذيذ." - فاطمة مقديشية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- نواكشوط، موريتانيا -->
+    <section id="nouakchott-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>موريتانيا</h2>
+                <p>بلد المليون شاعر</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن موريتانيا:</h3>
+                <p>موريتانيا هي دولة تقع في غرب أفريقيا، تشتهر بصحرائها الشاسعة وتراثها الثقافي الغني.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="موريتانيا3.jpg" alt="موريتانيا">
+                    <img src="موريتانيا2.jpg" alt="موريتانيا">
+                    <img src="موريتانيا1.jpg" alt="موريتانيا">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في موريتانيا</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>نواكشوط:</strong> العاصمة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شنقيط:</strong> المدينة التاريخية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>وادان:</strong> جوهرة الصحراء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>أطار:</strong> بوابة الصحراء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>حديقة جاولينغ:</strong> المحمية الطبيعية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شواطئ نواذيبو:</strong> الساحرة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى فبراير حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب اللحم الموريتاني، الكسكسي، التشريعة، والعصيدة.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $40-$90 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $5-$15 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $30-$70.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد جميل بتراث ثقافي غني." - أحمد الموريتاني</p>
+                <p>"شعب كريم وضيوف." - خديجة النواكشوطية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- جيبوتي -->
+    <section id="djibouti-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>جيبوتي</h2>
+                <p>بلد البحيرات المالحة</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن جيبوتي:</h3>
+                <p>جيبوتي هي دولة صغيرة تقع في القرن الأفريقي، تشتهر بموقعها الاستراتيجي على باب المندب.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="جيبوتي1.jpg" alt="جيبوتي">
+                    <img src="جيبوتي2.jpg" alt="جيبوتي">
+                    <img src="جيبوتي4.jpg" alt="جيبوتي">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في جيبوتي</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>جيبوتي العاصمة:</strong> المدينة الساحلية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بحيرة عسل:</strong> أخفض نقطة في أفريقيا</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>خليج تاجورة:</strong> المناظر الطبيعية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزر موشا:</strong> الحياة البحرية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>غابة داي:</strong> المحمية الطبيعية</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>منتزه جودا:</strong> البراكين الخامدة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من نوفمبر إلى مارس حيث يكون الطقس معتدلاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب السكامبياك، الفاه-فاه، اللحوم المشوية، والسمك الطازج.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $50-$120 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $10-$25 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $40-$80.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"بلد صغير بمناظر طبيعية خلابة." - علي الجيبوتي</p>
+                <p>"تجربة سياحية فريدة." - آمنة جيبوتية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- جزر القمر -->
+    <section id="comoros-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>جزر القمر</h2>
+                <p>أرخبيل العطور</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن جزر القمر:</h3>
+                <p>جزر القمر هي أرخبيل بركاني في المحيط الهندي، تشتهر بشواطئها الجميلة وطبيعتها الخلابة.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="جزر القمر1.jpg" alt="جزر القمر">
+                    <img src="جزر القمر2.jpg" alt="جزر القمر">
+                    <img src="جزر القمر3.jpg" alt="جزر القمر">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في جزر القمر</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>موروني:</strong> العاصمة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة موهيلي:</strong> الطبيعة البكر</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة أنجوان:</strong> الجبال الخضراء</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>جزيرة مايوت:</strong> الجمال الطبيعي</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>شواطئ جزر القمر:</strong> الرمل الأبيض</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>البراكين:</strong> مثل قرطالة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من مايو إلى نوفمبر حيث يكون الطقس جافاً.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب الماتابا، اللانغوستين، السمك المشوي، والفواكه الاستوائية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $50-$120 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $10-$25 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $40-$80.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"جنة استوائية حقيقية." - يوسف القمري</p>
+                <p>"تجربة لا تنسى." - فاطمة المورونية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <!-- فلسطين -->
+    <section id="palestine-details" class="destination-detail-view">
+        <div class="container">
+            <div class="detail-header">
+                <h2>فلسطين</h2>
+                <p>أرض الأنبياء</p>
+            </div>
+            <div class="detail-content">
+                <h3>نبذة عن فلسطين:</h3>
+                <p>فلسطين هي أرض مقدسة للديانات السماوية الثلاث، وتشتهر بمواقعها الدينية والتاريخية.</p>
+                
+                <div class="detail-images-gallery">
+                    <img src="فلسطين 1.jpg" alt="فلسطين">
+                    <img src="فلسطين 2.jpg" alt="فلسطين">
+                    <img src="فلسطين3.jpg" alt="فلسطين">
+                </div>
+                
+                <h3><i class="fas fa-map-marker-alt"></i>أفضل الأماكن السياحية في فلسطين</h3>
+                <ul>
+                    <li><i class="fas fa-check-circle"></i> <strong>القدس:</strong> المدينة المقدسة</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>بيت لحم:</strong> مسجد النبي داود</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>الخليل:</strong> الحرم الإبراهيمي</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>أريحا:</strong> أقدم مدينة في العالم</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>غزة:</strong> الساحل الفلسطيني</li>
+                    <li><i class="fas fa-check-circle"></i> <strong>نابلس:</strong> المدينة القديمة</li>
+                </ul>
+                
+                <h3><i class="fas fa-calendar-alt"></i>أفضل الأوقات للزيارة</h3>
+                <p>من مارس إلى مايو ومن سبتمبر إلى نوفمبر.</p>
+                
+                <h3><i class="fas fa-utensils"></i>المأكولات المحلية</h3>
+                <p>جرب المسخن، المقلوبة، الكنافة، والفلافل الفلسطينية.</p>
+                
+                <h3><i class="fas fa-dollar-sign"></i>متوسط الأسعار</h3>
+                <ul>
+                    <li><i class="fas fa-dollar-sign"></i> الإقامة في فندق متوسط: $50-$120 لليلة.</li>
+                    <li><i class="fas fa-dollar-sign"></i> وجبة في مطعم جيد: $10-$25 للشخص.</li>
+                    <li><i class="fas fa-dollar-sign"></i> جولة سياحية ليوم كامل: $40-$80.</li>
+                </ul>
+                
+                <h3><i class="fas fa-comments"></i>تقييمات إضافية</h3>
+                <p>"أرض مقدسة بتراث عريق." - محمد الفلسطيني</p>
+                <p>"تجربة روحانية لا تنسى." - سميرة القدسية</p>
+            </div>
+            <a href="#destinations" class="back-to-main-btn">العودة للرئيسية</a>
+        </div>
+    </section>
+
+    <footer id="main-footer">
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>عن الموقع</h3>
+                <p>سياحة العرب هو موقع متخصص في عرض الوجهات السياحية في الوطن العربي وتقديم المعلومات والنصائح للمسافرين.</p>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-column">
+                <h3>روابط سريعة</h3>
+                <ul>
+                    <li><a href="#" class="nav-link-home">الرئيسية</a></li>
+                    <li><a href="#destinations" class="nav-link-main">الوجهات</a></li>
+                    <li><a href="#categories" class="nav-link-main">أنواع السياحة</a></li>
+                    <li><a href="#testimonials" class="nav-link-main">تقييمات الزوار</a></li>
+                    <li><a href="#">المدونة</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>الدول</h3>
+                <ul>
+                    <li><a href="#dubai-details">الإمارات العربية المتحدة</a></li>
+                    <li><a href="#marrakech-details">المغرب</a></li>
+                    <li><a href="#cairo-details">مصر</a></li>
+                    <li><a href="#riyadh-details">السعودية</a></li>
+                    <li><a href="#petra-details">الأردن</a></li>
+                    <li><a href="#beirut-details">لبنان</a></li>
+                    <li><a href="#doha-details">قطر</a></li>
+                    <li><a href="#tunis-details">تونس</a></li>
+                    <li><a href="#baghdad-details">العراق</a></li>
+                    <li><a href="#damascus-details">سوريا</a></li>
+                    <li><a href="#muscat-details">عمان</a></li>
+                    <li><a href="#algiers-details">الجزائر</a></li>
+                    <li><a href="#kuwait-details">الكويت</a></li>
+                    <li><a href="#manama-details">البحرين</a></li>
+                    <li><a href="#sanaa-details">اليمن</a></li>
+                    <li><a href="#khartoum-details">السودان</a></li>
+                    <li><a href="#tripoli-details">ليبيا</a></li>
+                    <li><a href="#mogadishu-details">الصومال</a></li>
+                    <li><a href="#nouakchott-details">موريتانيا</a></li>
+                    <li><a href="#djibouti-details">جيبوتي</a></li>
+                    <li><a href="#comoros-details">جزر القمر</a></li>
+                    <li><a href="#palestine-details">فلسطين</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-column">
+                <h3>اتصل بنا</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> ليبيا -طرابلس</li>
+                    <li><i class="fas fa-phone"></i>09XXXXXXXX</li>
+                    <li><i class="fas fa-envelope"></i> siyahatalarab@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="copyright">
+            <p>&copy; 2025 سياحة العرب. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Testimonials Slider
+        const testimonials = document.querySelectorAll('.testimonial');
+        const prevBtn = document.getElementById('prev-testimonial');
+        const nextBtn = document.getElementById('next-testimonial');
+        let currentTestimonial = 0;
+
+        function showTestimonial(index) {
+            testimonials.forEach(testimonial => {
+                testimonial.classList.remove('active');
+            });
+            testimonials[index].classList.add('active');
+        }
+
+        prevBtn.addEventListener('click', () => {
+            currentTestimonial--;
+            if (currentTestimonial < 0) {
+                currentTestimonial = testimonials.length - 1;
+            }
+            showTestimonial(currentTestimonial);
+        });
+
+        nextBtn.addEventListener('click', () => {
+            currentTestimonial++;
+            if (currentTestimonial >= testimonials.length) {
+                currentTestimonial = 0;
+            }
+            showTestimonial(currentTestimonial);
+        });
+
+        // Auto slide testimonials
+        setInterval(() => {
+            currentTestimonial++;
+            if (currentTestimonial >= testimonials.length) {
+                currentTestimonial = 0;
+            }
+            showTestimonial(currentTestimonial);
+        }, 5000);
+
+        // Smooth scrolling for navigation links (only for main sections)
+        document.querySelectorAll('a[href^="#"].nav-link-main').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Scroll animation (for fade-in elements)
+        const fadeElements = document.querySelectorAll('.fade-in');
+
+        function checkScroll() {
+            fadeElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.style.opacity = '1';
+                    element.style.transform = 'translateY(0)';
+                }
+            });
+        }
+
+        // Initial check
+        checkScroll();
+
+        // Check on scroll
+        window.addEventListener('scroll', checkScroll);
+
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form');
+        newsletterForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const emailInput = this.querySelector('input[type="email"]');
+            alert(`شكرًا على اشتراكك! سيصلك كل جديد على ${emailInput.value}`);
+            emailInput.value = '';
+        });
+
+        // Show/hide destination details
+        document.querySelectorAll('.destination-detail-view').forEach(section => {
+            section.style.display = 'none';
+        });
+
+        // Show destination when hash matches
+        function checkHash() {
+            const hash = window.location.hash;
+            if (hash) {
+                const targetSection = document.querySelector(hash);
+                if (targetSection && targetSection.classList.contains('destination-detail-view')) {
+                    document.getElementById('main-header').style.display = 'none';
+                    document.getElementById('main-sections-wrapper').style.display = 'none';
+                    document.getElementById('main-footer').style.display = 'none';
+                    targetSection.style.display = 'block';
+                    window.scrollTo(0, 0);
+                } else {
+                    document.getElementById('main-header').style.display = 'flex';
+                    document.getElementById('main-sections-wrapper').style.display = 'block';
+                    document.getElementById('main-footer').style.display = 'block';
+                    document.querySelectorAll('.destination-detail-view').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                }
+            } else {
+                document.getElementById('main-header').style.display = 'flex';
+                document.getElementById('main-sections-wrapper').style.display = 'block';
+                document.getElementById('main-footer').style.display = 'block';
+                document.querySelectorAll('.destination-detail-view').forEach(section => {
+                    section.style.display = 'none';
+                });
+            }
+        }
+
+        // Check hash on page load and hash change
+        window.addEventListener('load', checkHash);
+        window.addEventListener('hashchange', checkHash);
+    </script>
+</body>
+</html>
